@@ -1,0 +1,448 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Enhanced Interactive Webpage Assignment</title>
+  <style>
+    /* General Styles */
+    body {
+      font-family: Arial, sans-serif;
+      margin: 20px;
+      background-color: #f9f9f9;
+      color: #333;
+      transition: background-color 0.3s, color 0.3s;
+    }
+
+    h1, h2 {
+      color: #4CAF50;
+    }
+
+    input, button {
+      padding: 10px;
+      margin: 5px 0;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      font-size: 1em;
+    }
+
+    button {
+      background-color: #4CAF50;
+      color: white;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+
+    button:hover {
+      background-color: #45a049;
+    }
+
+    .error {
+      color: red;
+      font-size: 0.9em;
+    }
+
+    .success {
+      color: green;
+      font-size: 1em;
+    }
+
+    .dark-theme {
+      background-color: #333;
+      color: #fff;
+    }
+
+    .blue-theme {
+      background-color: #e3f2fd;
+      color: #0d47a1;
+    }
+
+    .green-theme {
+      background-color: #e8f5e9;
+      color: #1b5e20;
+    }
+
+    /* Form Section */
+    form {
+      background-color: #d6aaaa;
+      padding: 20px;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+      margin-bottom: 20px;
+    }
+
+    form label {
+      font-weight: bold;
+    }
+
+    form small {
+      display: block;
+      margin-top: -5px;
+      margin-bottom: 10px;
+      color: #666;
+    }
+
+    /* Counter Section */
+    #counterButton {
+      display: inline-block;
+      margin-top: 10px;
+    }
+
+    /* To-Do List Section */
+    #todoList {
+      list-style-type: none;
+      padding: 0;
+    }
+
+    .todo-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background-color: #fff;
+      padding: 10px;
+      margin: 5px 0;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+      cursor: grab;
+    }
+
+    .todo-item.dragging {
+      opacity: 0.5;
+    }
+
+    .todo-item span {
+      flex-grow: 1;
+    }
+
+    .todo-item button {
+      background-color: #f44336;
+      color: white;
+      border: none;
+      padding: 5px 10px;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+
+    .todo-item button:hover {
+      background-color: #d32f2f;
+    }
+
+    .completed {
+      text-decoration: line-through;
+      color: gray;
+    }
+
+    /* Weather Checker Section */
+    #weatherResult {
+      margin-top: 10px;
+      font-weight: bold;
+    }
+
+    /* Theme Toggle Button */
+    #themeToggleButton {
+      margin-top: 10px;
+      background-color: #2196F3;
+      color: white;
+    }
+
+    #themeToggleButton:hover {
+      background-color: #1976D2;
+    }
+
+    /* Calculator Section */
+    .calculator {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 10px;
+      max-width: 200px;
+      margin: 20px 0;
+    }
+
+    .calculator button {
+      padding: 15px;
+      font-size: 1.2em;
+    }
+
+    .calculator input {
+      grid-column: span 4;
+      padding: 10px;
+      font-size: 1.2em;
+      text-align: right;
+    }
+
+    /* Live Clock */
+    #clock {
+      font-size: 1.5em;
+      font-weight: bold;
+      margin-top: 20px;
+    }
+
+    /* Responsive Design */
+    @media (max-width: 600px) {
+      body {
+        font-size: 0.9em;
+      }
+
+      input, button {
+        font-size: 0.9em;
+      }
+    }
+  </style>
+</head>
+<body>
+  <h1>Enhanced Interactive Webpage</h1>
+
+  <!-- Live Clock -->
+  <h2>Live Clock</h2>
+  <div id="clock"></div>
+
+  <!-- Form Section -->
+  <form id="userForm">
+    <label for="name">Name:</label>
+    <input type="text" id="name" name="name" required>
+    <span id="nameError" class="error"></span>
+    <br>
+    <small>Characters: <span id="charCount">0</span></small>
+    <br><br>
+
+    <label for="email">Email:</label>
+    <input type="email" id="email" name="email" required>
+    <span id="emailError" class="error"></span>
+    <br><br>
+
+    <button type="submit">Submit</button>
+  </form>
+
+  <!-- Interactive Counter Section -->
+  <h2>Interactive Counter</h2>
+  <p>Click the button to increase the counter:</p>
+  <button id="counterButton">Click Me</button>
+  <p>Counter: <span id="counter">0</span></p>
+
+  <!-- To-Do List Section -->
+  <h2>To-Do List</h2>
+  <input type="text" id="todoInput" placeholder="Enter a task">
+  <button id="addTodoButton">Add Task</button>
+  <ul id="todoList"></ul>
+
+  <!-- Calculator Section -->
+  <h2>Interactive Calculator</h2>
+  <div class="calculator">
+    <input type="text" id="calcDisplay" disabled>
+    <button class="calcButton">7</button>
+    <button class="calcButton">8</button>
+    <button class="calcButton">9</button>
+    <button class="calcButton">/</button>
+    <button class="calcButton">4</button>
+    <button class="calcButton">5</button>
+    <button class="calcButton">6</button>
+    <button class="calcButton">*</button>
+    <button class="calcButton">1</button>
+    <button class="calcButton">2</button>
+    <button class="calcButton">3</button>
+    <button class="calcButton">-</button>
+    <button class="calcButton">0</button>
+    <button class="calcButton">.</button>
+    <button id="calcClear">C</button>
+    <button class="calcButton">+</button>
+    <button id="calcEquals">=</button>
+  </div>
+
+  <!-- Theme Toggle Section -->
+  <h2>Customizable Theme</h2>
+  <button id="darkThemeButton">Dark Theme</button>
+  <button id="blueThemeButton">Blue Theme</button>
+  <button id="greenThemeButton">Green Theme</button>
+
+  <!-- Weather Checker Section -->
+  <h2>Weather Checker</h2>
+  <input type="text" id="cityInput" placeholder="Enter city name">
+  <button id="getWeatherButton">Get Weather</button>
+  <p id="weatherResult"></p>
+
+  <script>
+    // Live Clock
+    function updateClock() {
+      const now = new Date();
+      const time = now.toLocaleTimeString();
+      document.getElementById('clock').textContent = time;
+    }
+    setInterval(updateClock, 1000);
+    updateClock();
+
+    // Form Validation
+    const form = document.getElementById('userForm');
+    const nameInput = document.getElementById('name');
+    const emailInput = document.getElementById('email');
+    const nameError = document.getElementById('nameError');
+    const emailError = document.getElementById('emailError');
+    const charCount = document.getElementById('charCount');
+
+    form.addEventListener('submit', (event) => {
+      let isValid = true;
+
+      // Validate Name
+      if (nameInput.value.trim() === '') {
+        nameError.textContent = 'Name is required.';
+        isValid = false;
+      } else {
+        nameError.textContent = '';
+      }
+
+      // Validate Email
+      if (emailInput.value.trim() === '') {
+        emailError.textContent = 'Email is required.';
+        isValid = false;
+      } else if (!/\S+@\S+\.\S+/.test(emailInput.value)) {
+        emailError.textContent = 'Please enter a valid email address.';
+        isValid = false;
+      } else {
+        emailError.textContent = '';
+      }
+
+      // Prevent form submission if validation fails
+      if (!isValid) {
+        event.preventDefault();
+      } else {
+        alert('Form submitted successfully!');
+      }
+    });
+
+    // Real-Time Character Counter
+    nameInput.addEventListener('input', () => {
+      charCount.textContent = nameInput.value.length;
+    });
+
+    // Interactive Counter
+    const counterButton = document.getElementById('counterButton');
+    const counterDisplay = document.getElementById('counter');
+    let counter = 0;
+
+    counterButton.addEventListener('click', () => {
+      counter++;
+      counterDisplay.textContent = counter;
+    });
+
+    // To-Do List with Drag-and-Drop
+    const todoInput = document.getElementById('todoInput');
+    const addTodoButton = document.getElementById('addTodoButton');
+    const todoList = document.getElementById('todoList');
+
+    addTodoButton.addEventListener('click', () => {
+      const task = todoInput.value.trim();
+      if (task) {
+        const listItem = document.createElement('li');
+        listItem.className = 'todo-item';
+        listItem.textContent = task;
+        todoList.appendChild(listItem);
+        todoInput.value = '';
+
+        // Drag-and-Drop
+        listItem.setAttribute('draggable', true);
+        listItem.addEventListener('dragstart', () => {
+          listItem.classList.add('dragging');
+        });
+        listItem.addEventListener('dragend', () => {
+          listItem.classList.remove('dragging');
+        });
+      }
+    });
+
+    todoList.addEventListener('dragover', (e) => {
+      e.preventDefault();
+      const draggingItem = document.querySelector('.dragging');
+      const afterElement = getDragAfterElement(todoList, e.clientY);
+      if (afterElement == null) {
+        todoList.appendChild(draggingItem);
+      } else {
+        todoList.insertBefore(draggingItem, afterElement);
+      }
+    });
+
+    function getDragAfterElement(container, y) {
+      const draggableElements = [...container.querySelectorAll('.todo-item:not(.dragging)')];
+      return draggableElements.reduce((closest, child) => {
+        const box = child.getBoundingClientRect();
+        const offset = y - box.top - box.height / 2;
+        if (offset < 0 && offset > closest.offset) {
+          return { offset: offset, element: child };
+        } else {
+          return closest;
+        }
+      }, { offset: Number.NEGATIVE_INFINITY }).element;
+    }
+
+    // Calculator
+    const calcDisplay = document.getElementById('calcDisplay');
+    const calcButtons = document.querySelectorAll('.calcButton');
+    const calcClear = document.getElementById('calcClear');
+    const calcEquals = document.getElementById('calcEquals');
+    let calcExpression = '';
+
+    calcButtons.forEach(button => {
+      button.addEventListener('click', () => {
+        calcExpression += button.textContent;
+        calcDisplay.value = calcExpression;
+      });
+    });
+
+    calcClear.addEventListener('click', () => {
+      calcExpression = '';
+      calcDisplay.value = '';
+    });
+
+    calcEquals.addEventListener('click', () => {
+      try {
+        calcExpression = eval(calcExpression).toString();
+        calcDisplay.value = calcExpression;
+      } catch {
+        calcDisplay.value = 'Error';
+      }
+    });
+
+    // Theme Toggle
+    const darkThemeButton = document.getElementById('darkThemeButton');
+    const blueThemeButton = document.getElementById('blueThemeButton');
+    const greenThemeButton = document.getElementById('greenThemeButton');
+
+    darkThemeButton.addEventListener('click', () => {
+      document.body.className = 'dark-theme';
+    });
+
+    blueThemeButton.addEventListener('click', () => {
+      document.body.className = 'blue-theme';
+    });
+
+    greenThemeButton.addEventListener('click', () => {
+      document.body.className = 'green-theme';
+    });
+
+    // Weather Checker
+    const getWeatherButton = document.getElementById('getWeatherButton');
+    const weatherResult = document.getElementById('weatherResult');
+
+    getWeatherButton.addEventListener('click', async () => {
+      const city = document.getElementById('cityInput').value.trim();
+      if (!city) {
+        weatherResult.textContent = 'Please enter a city name.';
+        return;
+      }
+
+      const apiKey = '01bc9ef17def3668d5d09b544f34f281';
+      const url = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}&units=metric`;
+
+      try {
+        const response = await fetch(url);
+        if (!response.ok) throw new Error('City not found');
+        const data = await response.json();
+        weatherResult.textContent = `Weather in ${data.name}: ${data.main.temp}°C, ${data.weather[0].description}`;
+      } catch (error) {
+        weatherResult.textContent = 'Error fetching weather data. Please try again.';
+      }
+    });
+  </script>
+</body>
+</html>
